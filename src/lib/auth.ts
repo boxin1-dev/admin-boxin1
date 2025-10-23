@@ -1,0 +1,33 @@
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import { PrismaClient } from "../generated/client";
+import { resend } from "./email";
+
+const prisma = new PrismaClient();
+
+export const auth = betterAuth({
+  database: prismaAdapter(prisma, {
+    provider: "postgresql",
+  }),
+  emailAndPassword: {
+    enabled: true,
+
+    sendResetPassword: async ({
+      user,
+      url,
+    }: {
+      user: { email: string };
+      url: string;
+    }) => {
+      const { error } = await resend.emails.send({
+        from: process.env.SENDER_EMAIL || "Acme <onboarding@resend.dev>",
+        to: user.email,
+        subject: "Reset your password",
+        text: `Click the link to reset your password: ${url}`,
+      });
+      if (error) {
+        console.error("Error sending email:", error);
+      }
+    },
+  },
+});
