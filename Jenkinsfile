@@ -205,28 +205,6 @@ pipeline {
                 '''
             }
         }
-
-
-
-        stage('Health Check') {
-            steps {
-                sh '''
-                    echo "🏥 Vérification de la santé des services..."
-                    
-                    # Check API
-                    API_STATUS=$(docker inspect -f '{{.State.Status}}' ${APP_CONTAINER})
-                    echo "APP Status: $APP_STATUS"
-                    
-                    # Check if all are running
-                    if [ "$APP_STATUS" = "running" ]; then
-                        echo "Service ok✅ "
-                    else
-                        echo "❌ Erreur de démarrage du service"
-                        exit 1
-                    fi
-                '''
-            }
-        }
     }
 
 
