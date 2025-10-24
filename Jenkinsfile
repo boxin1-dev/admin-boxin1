@@ -198,8 +198,6 @@ pipeline {
                         -e DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public" \
                         -e BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET} \
                         ${APP_IMAGE} \
-                        sh -c "echo 'Starting web server...'"
-                        
                     
                     echo "⏳ Attente du démarrage de l'applications Web..."
                     sleep 5
