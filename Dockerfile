@@ -40,6 +40,9 @@ ARG RESEND_KEY
 ENV RESEND_KEY=$RESEND_KEY
 
 
+ARG BETTER_AUTH_SECRET
+ENV BETTER_AUTH_SECRET=$BETTER_AUTH_SECRET
+
 
 # Générer le client Prisma pour Alpine Linux
 RUN pnpm prisma generate

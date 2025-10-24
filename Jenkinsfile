@@ -177,6 +177,7 @@ pipeline {
                         docker build -t ${APP_IMAGE} \
                             --build-arg DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public" \
                             --build-arg RESEND_KEY=${RESEND_KEY} \
+                            --build-arg BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET} \
                             .
                     '''
                 }
