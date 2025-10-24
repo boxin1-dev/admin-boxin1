@@ -195,7 +195,6 @@ pipeline {
                         -p 4000:${APP_PORT} \
                         -e NODE_ENV=production \
                         -e DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public" \
-                        --restart unless-stopped \
                         ${APP_IMAGE} \
                         sh -c "echo 'Starting web server...'"
                     
