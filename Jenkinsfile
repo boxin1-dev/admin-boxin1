@@ -197,7 +197,6 @@ pipeline {
                         -e NODE_ENV=production \
                         -e DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public" \
                         -e BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET} \
-                        -e BETTER_AUTH_URL=${BETTER_AUTH_URL} \
                         -e RESEND_KEY=${RESEND_KEY} \
                         ${APP_IMAGE} \
                     
