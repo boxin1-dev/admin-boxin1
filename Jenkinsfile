@@ -128,7 +128,16 @@ pipeline {
                 '''
             }
         }
-        
+
+        stage('Verify Database') {
+            steps {
+                sh '''
+                    echo "✅ Vérification de la base de données..."
+                    docker exec ${POSTGRES_CONTAINER} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "\\dt"
+                '''
+            }
+        }        
+                
 
     }
 }
