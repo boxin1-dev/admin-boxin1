@@ -223,30 +223,31 @@ pipeline {
                 '''
             }
         }
+    }
 
-        post {
-            success {
-                echo "✅ Déploiement réussi!"
-                sh '''
-                    echo "📊 État du container:"
-                    docker ps | grep ${APP_CONTAINER}
-                '''
-            }
-            failure {
-                echo "❌ Échec du déploiement"
-                sh '''
-                    echo "📋 Logs des containers:"
-                    docker logs ${APP_CONTAINER} --tail 50 || true
-                    docker logs ${POSTGRES_CONTAINER} --tail 50 || true
-                    
-                '''
-            }
-            cleanup {
-                sh '''
-                    rm -rf Boxin1_migrations
-                '''
-            }
+
+
+    post {
+        success {
+            echo "✅ Déploiement réussi!"
+            sh '''
+                echo "📊 État du container:"
+                docker ps | grep ${APP_CONTAINER}
+            '''
         }
-
+        failure {
+            echo "❌ Échec du déploiement"
+            sh '''
+                echo "📋 Logs des containers:"
+                docker logs ${APP_CONTAINER} --tail 50 || true
+                docker logs ${POSTGRES_CONTAINER} --tail 50 || true
+                
+            '''
+        }
+        cleanup {
+            sh '''
+                rm -rf Boxin1_migrations
+            '''
+        }
     }
 }
