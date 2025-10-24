@@ -44,6 +44,10 @@ ARG BETTER_AUTH_SECRET
 ENV BETTER_AUTH_SECRET=$BETTER_AUTH_SECRET
 
 
+ARG BETTER_AUTH_URL
+ENV BETTER_AUTH_URL=$BETTER_AUTH_URL
+
+
 # Générer le client Prisma pour Alpine Linux
 RUN pnpm prisma generate
 
