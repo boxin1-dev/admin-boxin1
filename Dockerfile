@@ -36,6 +36,11 @@ COPY . .
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
 
+ARG RESEND_KEY
+ENV RESEND_KEY=$RESEND_KEY
+
+
+
 # Générer le client Prisma pour Alpine Linux
 RUN pnpm prisma generate
 
