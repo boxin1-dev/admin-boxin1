@@ -194,7 +194,7 @@ pipeline {
                     docker run -d \
                         --name ${APP_CONTAINER} \
                         --network ${NETWORK_NAME} \
-                        -p ${APP_PORT}:${APP_PORT} \
+                        -p 4000:${APP_PORT} \
                         -e NODE_ENV=production \
                         -e DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public" \
                         -e BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET} \
