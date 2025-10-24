@@ -196,7 +196,8 @@ pipeline {
                         -e NODE_ENV=production \
                         -e DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public" \
                         ${APP_IMAGE} \
-                        sh -c "echo 'Starting web server...'"
+                        sh -c "echo 'Starting web server...' && pnpm start"
+                        
                     
                     echo "⏳ Attente du démarrage de l'applications Web..."
                     sleep 5
