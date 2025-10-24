@@ -138,6 +138,115 @@ pipeline {
             }
         }        
                 
+        // ========== SETUP APPLICATION ==========       
+        stage('Cleanup Old App Containers') {
+            steps {
+                sh '''
+                    echo "🧹 Nettoyage des anciens containers d'application..."
+                    docker stop ${APP_CONTAINER} || true
+                    docker rm ${APP_CONTAINER} || true
+                '''
+            }
+        }
+
+        stage('Clone repo for Build') {
+            steps {
+                sh '''
+                    if [ -d "${WORKSPACE_DIR}/.git" ]; then
+                        echo "📦 Le dossier ${WORKSPACE_DIR} existe déjà. Mise à jour du dépôt..."
+                        cd ${WORKSPACE_DIR}
+                        git fetch --all
+                        git reset --hard origin/${REPO_BRANCH}
+                        git pull origin ${REPO_BRANCH}
+                    else
+                        echo "📥 Clonage du dépôt ${REPO_MAIN}..."
+                        git clone https://${GITHUB_TOKEN}@github.com/${REPO_MAIN} ${WORKSPACE_DIR}
+                    fi
+                '''
+            }
+        }
+        
+
+        stage('Build Docker Image') {
+            steps {
+                dir("${WORKSPACE_DIR}") {
+                    sh '''
+                        echo "🐳 Build des images Docker..."
+
+                        # Build APP
+                        docker build -t ${APP_IMAGE}:latest .
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy App Container') {
+            steps {
+                sh '''
+                    echo "🚀 Déploiement du container...."
+                    
+                    # Web Instance 1
+                    docker run -d \
+                        --name ${APP_CONTAINER} \
+                        --network ${NETWORK_NAME} \
+                        -p 4000:${APP_PORT} \
+                        -e NODE_ENV=production \
+                        -e DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public" \
+                        --restart unless-stopped \
+                        ${APP_IMAGE} \
+                        sh -c "echo 'Starting web server...'"
+                    
+                    echo "⏳ Attente du démarrage de l'applications Web..."
+                    sleep 5
+                '''
+            }
+        }
+
+
+
+        stage('Health Check') {
+            steps {
+                sh '''
+                    echo "🏥 Vérification de la santé des services..."
+                    
+                    # Check API
+                    API_STATUS=$(docker inspect -f '{{.State.Status}}' ${APP_CONTAINER})
+                    echo "APP Status: $APP_STATUS"
+                    
+                    # Check if all are running
+                    if [ "$APP_STATUS" = "running" ]; then
+                        echo "Service ok✅ "
+                    else
+                        echo "❌ Erreur de démarrage du service"
+                        exit 1
+                    fi
+                '''
+            }
+        }
+
+        post {
+            success {
+                echo "✅ Déploiement réussi!"
+                sh '''
+                    echo "📊 État du container:"
+                    docker ps | grep ${APP_CONTAINER}
+                '''
+            }
+            failure {
+                echo "❌ Échec du déploiement"
+                sh '''
+                    echo "📋 Logs des containers:"
+                    docker logs ${APP_CONTAINER} --tail 50 || true
+                    docker logs ${POSTGRES_CONTAINER} --tail 50 || true
+                    
+                '''
+            }
+            cleanup {
+                sh '''
+                    rm -rf Boxin1_migrations
+                '''
+            }
+        }
 
     }
 }
