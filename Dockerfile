@@ -33,6 +33,9 @@ RUN pnpm install --frozen-lockfile
 # Copier le code source
 COPY . .
 
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
+
 # Générer le client Prisma pour Alpine Linux
 RUN pnpm prisma generate
 

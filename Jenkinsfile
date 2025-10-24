@@ -174,7 +174,9 @@ pipeline {
                         echo "🐳 Build des images Docker..."
 
                         # Build APP
-                        docker build -t ${APP_IMAGE}:latest .
+                        docker build -t ${APP_IMAGE} \
+                            --build-arg DATABASE_URL=${DATABASE_URL} \
+                            .
                     '''
                 }
             }
