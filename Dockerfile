@@ -80,4 +80,4 @@ ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
 # Commande de démarrage
-#CMD ["node", "server.js"]
+CMD ["node", "server.js"]
