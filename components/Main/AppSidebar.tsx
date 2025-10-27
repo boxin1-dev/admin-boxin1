@@ -1,17 +1,14 @@
 "use client";
 
 import {
-  IconChartBar,
   IconDashboard,
   IconFolder,
   IconInnerShadowTop,
-  IconListDetails,
-  IconUsers,
 } from "@tabler/icons-react";
 import * as React from "react";
 
-import { NavMain } from "@/components/Dashboard/NavMain";
-import { NavUser } from "@/components/Dashboard/NavUser";
+import { NavMain } from "@/components/Main/NavMain";
+import { NavUser } from "@/components/Main/NavUser";
 
 import {
   Sidebar,
@@ -23,40 +20,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      icon: IconDashboard,
-    },
-    {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails,
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
-    },
-  ],
-};
+
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -77,10 +41,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

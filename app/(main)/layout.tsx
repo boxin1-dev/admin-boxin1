@@ -1,6 +1,6 @@
 "use client";
-import { AppSidebar } from "@/components/Dashboard/AppSidebar";
-import { SiteHeader } from "@/components/Dashboard/SiteHeader";
+import { AppSidebar } from "@/components/Main/AppSidebar";
+import { SiteHeader } from "@/components/Main/SiteHeader";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { authClient } from "@/src/lib/auth-client";
 
