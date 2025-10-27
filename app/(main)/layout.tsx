@@ -1,4 +1,7 @@
 "use client";
+import { AppSidebar } from "@/components/Dashboard/AppSidebar";
+import { SiteHeader } from "@/components/Dashboard/SiteHeader";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { authClient } from "@/src/lib/auth-client";
 
 export default function layout({
@@ -18,5 +21,20 @@ export default function layout({
 
   //const userRole = session?.user.role as Role;
 
-  return <>{children}</>;
+  return (
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader />
+        {children}
+      </SidebarInset>
+    </SidebarProvider>
+  );
 }
