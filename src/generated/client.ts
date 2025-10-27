@@ -67,3 +67,8 @@ export type Account = Prisma.AccountModel
  * 
  */
 export type Verification = Prisma.VerificationModel
+/**
+ * Model TextEntry
+ * 
+ */
+export type TextEntry = Prisma.TextEntryModel

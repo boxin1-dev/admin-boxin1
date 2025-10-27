@@ -74,3 +74,13 @@ model Verification {
 
   @@map("verification")
 }
+
+model TextEntry {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  lang      String   @default("fr")
+  updatedAt DateTime @updatedAt
+
+  @@map("text_entry")
+}
