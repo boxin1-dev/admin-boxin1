@@ -392,7 +392,8 @@ export const ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  TextEntry: 'TextEntry'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification"
+    modelProps: "user" | "session" | "account" | "verification" | "textEntry"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -708,6 +709,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TextEntry: {
+      payload: Prisma.$TextEntryPayload<ExtArgs>
+      fields: Prisma.TextEntryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TextEntryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TextEntryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TextEntryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TextEntryPayload>
+        }
+        findFirst: {
+          args: Prisma.TextEntryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TextEntryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TextEntryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TextEntryPayload>
+        }
+        findMany: {
+          args: Prisma.TextEntryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TextEntryPayload>[]
+        }
+        create: {
+          args: Prisma.TextEntryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TextEntryPayload>
+        }
+        createMany: {
+          args: Prisma.TextEntryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TextEntryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TextEntryPayload>[]
+        }
+        delete: {
+          args: Prisma.TextEntryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TextEntryPayload>
+        }
+        update: {
+          args: Prisma.TextEntryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TextEntryPayload>
+        }
+        deleteMany: {
+          args: Prisma.TextEntryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TextEntryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TextEntryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TextEntryPayload>[]
+        }
+        upsert: {
+          args: Prisma.TextEntryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TextEntryPayload>
+        }
+        aggregate: {
+          args: Prisma.TextEntryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTextEntry>
+        }
+        groupBy: {
+          args: Prisma.TextEntryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TextEntryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TextEntryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TextEntryCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -805,6 +880,17 @@ export const VerificationScalarFieldEnum = {
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
+export const TextEntryScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  value: 'value',
+  lang: 'lang',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TextEntryScalarFieldEnum = (typeof TextEntryScalarFieldEnum)[keyof typeof TextEntryScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -881,6 +967,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -974,6 +1074,7 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
+  textEntry?: Prisma.TextEntryOmit
 }
 
 /* Types for Logging */
