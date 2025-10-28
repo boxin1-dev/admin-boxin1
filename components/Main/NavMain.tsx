@@ -19,8 +19,8 @@ const links = [
     icon: IconDashboard,
   },
   {
-    title: "Manage",
-    url: "/manage",
+    title: "Manage client interface",
+    url: "/manage/clientinterface",
     icon: IconFolder,
   },
 ];
