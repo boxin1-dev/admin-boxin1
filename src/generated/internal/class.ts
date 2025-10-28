@@ -22,7 +22,7 @@ const config: runtime.GetPrismaClientConfig = {
       "value": "prisma-client"
     },
     "output": {
-      "value": "/home/eden/boxin1/admin-boxin1/src/generated",
+      "value": "/home/tsanta/boxin1/admin-boxin1/src/generated",
       "fromEnvVar": null
     },
     "config": {
@@ -40,7 +40,7 @@ const config: runtime.GetPrismaClientConfig = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/eden/boxin1/admin-boxin1/prisma/schema.prisma",
+    "sourceFilePath": "/home/tsanta/boxin1/admin-boxin1/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativePath": "../../prisma",

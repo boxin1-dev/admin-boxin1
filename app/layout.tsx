@@ -1,7 +1,9 @@
+"use client";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { ThemeProvider } from "@/components/utils/theme-provider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "./globals.css";
 
@@ -15,10 +17,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Admin ",
-  description: "Application ",
+  description: "Application",
 };
+
+const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
@@ -36,7 +40,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
         </ThemeProvider>
       </body>
     </html>

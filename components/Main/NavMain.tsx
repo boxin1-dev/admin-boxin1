@@ -1,8 +1,7 @@
 "use client";
 
-import { IconCirclePlusFilled, IconMail, type Icon } from "@tabler/icons-react";
+import { IconDashboard, IconFolder } from "@tabler/icons-react";
 
-import { Button } from "@/components/ui/button";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -10,19 +9,30 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon?: Icon;
-  }[];
-}) {
+const links = [
+  {
+    title: "Dashboard",
+    url: "/",
+    icon: IconDashboard,
+  },
+  {
+    title: "Manage client interface",
+    url: "/manage/clientinterface",
+    icon: IconFolder,
+  },
+];
+
+export function NavMain() {
+  const pathname = usePathname();
+  const router = useRouter();
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
+        {/*        
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
@@ -42,10 +52,18 @@ export function NavMain({
             </Button>
           </SidebarMenuItem>
         </SidebarMenu>
+        */}
         <SidebarMenu>
-          {items.map((item) => (
+          {links.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
+              <SidebarMenuButton
+                tooltip={item.title}
+                className={cn(
+                  pathname === item.url &&
+                    "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
+                )}
+                onClick={() => router.push(item.url)}
+              >
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>
               </SidebarMenuButton>

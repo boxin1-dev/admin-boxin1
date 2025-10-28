@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  closestCenter,
-  DndContext,
   KeyboardSensor,
   MouseSensor,
   TouchSensor,
@@ -11,20 +9,10 @@ import {
   type DragEndEvent,
   type UniqueIdentifier,
 } from "@dnd-kit/core";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { arrayMove, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {
   IconChevronDown,
-  IconChevronLeft,
-  IconChevronRight,
-  IconChevronsLeft,
-  IconChevronsRight,
   IconCircleCheckFilled,
   IconDotsVertical,
   IconGripVertical,
@@ -90,14 +78,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { TableCell, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -470,7 +451,9 @@ export function DataTable({
           </Button>
         </div>
       </div>
-      <TabsContent
+      {/*
+      
+        <TabsContent
         value="outline"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
@@ -603,6 +586,9 @@ export function DataTable({
           </div>
         </div>
       </TabsContent>
+      
+      */}
+
       <TabsContent
         value="past-performance"
         className="flex flex-col px-4 lg:px-6"
