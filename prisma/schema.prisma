@@ -102,3 +102,4 @@ model BoxClientInfo {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
+

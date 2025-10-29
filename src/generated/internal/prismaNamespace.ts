@@ -393,7 +393,8 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  TextEntry: 'TextEntry'
+  TextEntry: 'TextEntry',
+  BoxClientInfo: 'BoxClientInfo'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "textEntry"
+    modelProps: "user" | "session" | "account" | "verification" | "textEntry" | "boxClientInfo"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -783,6 +784,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    BoxClientInfo: {
+      payload: Prisma.$BoxClientInfoPayload<ExtArgs>
+      fields: Prisma.BoxClientInfoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BoxClientInfoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoxClientInfoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BoxClientInfoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoxClientInfoPayload>
+        }
+        findFirst: {
+          args: Prisma.BoxClientInfoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoxClientInfoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BoxClientInfoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoxClientInfoPayload>
+        }
+        findMany: {
+          args: Prisma.BoxClientInfoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoxClientInfoPayload>[]
+        }
+        create: {
+          args: Prisma.BoxClientInfoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoxClientInfoPayload>
+        }
+        createMany: {
+          args: Prisma.BoxClientInfoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BoxClientInfoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoxClientInfoPayload>[]
+        }
+        delete: {
+          args: Prisma.BoxClientInfoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoxClientInfoPayload>
+        }
+        update: {
+          args: Prisma.BoxClientInfoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoxClientInfoPayload>
+        }
+        deleteMany: {
+          args: Prisma.BoxClientInfoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BoxClientInfoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BoxClientInfoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoxClientInfoPayload>[]
+        }
+        upsert: {
+          args: Prisma.BoxClientInfoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoxClientInfoPayload>
+        }
+        aggregate: {
+          args: Prisma.BoxClientInfoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBoxClientInfo>
+        }
+        groupBy: {
+          args: Prisma.BoxClientInfoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BoxClientInfoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BoxClientInfoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BoxClientInfoCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -889,6 +964,25 @@ export const TextEntryScalarFieldEnum = {
 } as const
 
 export type TextEntryScalarFieldEnum = (typeof TextEntryScalarFieldEnum)[keyof typeof TextEntryScalarFieldEnum]
+
+
+export const BoxClientInfoScalarFieldEnum = {
+  id: 'id',
+  ip: 'ip',
+  hostname: 'hostname',
+  city: 'city',
+  region: 'region',
+  country: 'country',
+  loc: 'loc',
+  org: 'org',
+  timezone: 'timezone',
+  readme: 'readme',
+  macAddress: 'macAddress',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BoxClientInfoScalarFieldEnum = (typeof BoxClientInfoScalarFieldEnum)[keyof typeof BoxClientInfoScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1075,6 +1169,7 @@ export type GlobalOmitConfig = {
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
   textEntry?: Prisma.TextEntryOmit
+  boxClientInfo?: Prisma.BoxClientInfoOmit
 }
 
 /* Types for Logging */

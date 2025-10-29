@@ -52,7 +52,8 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  TextEntry: 'TextEntry'
+  TextEntry: 'TextEntry',
+  BoxClientInfo: 'BoxClientInfo'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -138,6 +139,25 @@ export const TextEntryScalarFieldEnum = {
 } as const
 
 export type TextEntryScalarFieldEnum = (typeof TextEntryScalarFieldEnum)[keyof typeof TextEntryScalarFieldEnum]
+
+
+export const BoxClientInfoScalarFieldEnum = {
+  id: 'id',
+  ip: 'ip',
+  hostname: 'hostname',
+  city: 'city',
+  region: 'region',
+  country: 'country',
+  loc: 'loc',
+  org: 'org',
+  timezone: 'timezone',
+  readme: 'readme',
+  macAddress: 'macAddress',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BoxClientInfoScalarFieldEnum = (typeof BoxClientInfoScalarFieldEnum)[keyof typeof BoxClientInfoScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -41,3 +41,8 @@ export type Verification = Prisma.VerificationModel
  * 
  */
 export type TextEntry = Prisma.TextEntryModel
+/**
+ * Model BoxClientInfo
+ * 
+ */
+export type BoxClientInfo = Prisma.BoxClientInfoModel
