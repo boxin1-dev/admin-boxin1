@@ -84,3 +84,21 @@ model TextEntry {
 
   @@map("text_entry")
 }
+
+
+model BoxClientInfo {
+  id         Int      @id @default(autoincrement())
+  ip         String
+  hostname   String?  
+  city       String?
+  region     String?
+  country    String?
+  loc        String?
+  org        String?
+  timezone   String?
+  readme     String?
+  macAddress String?
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

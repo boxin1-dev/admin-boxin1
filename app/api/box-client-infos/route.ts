@@ -1,6 +1,7 @@
+// app/api/boxClientInfo/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
-// Interface pour typer les données reçues
 interface BoxClientInfoData {
   ip: string;
   hostname?: string;
@@ -16,31 +17,36 @@ interface BoxClientInfoData {
 
 export async function POST(request: NextRequest) {
   try {
-    // Récupérer les données envoyées par le client
     const data: BoxClientInfoData = await request.json();
 
-    // Validation des données requises
     if (!data.ip) {
       return NextResponse.json(
-        {
-          success: false,
-          error: "L'adresse IP est requise",
-        },
+        { success: false, error: "L'adresse IP est requise" },
         { status: 400 }
       );
     }
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Données IP enregistrées avec succès",
-        data: data,
+    const record = await prisma.boxClientInfo.create({
+      data: {
+        ip: data.ip,
+        hostname: data.hostname,
+        city: data.city,
+        region: data.region,
+        country: data.country,
+        loc: data.loc,
+        org: data.org,
+        timezone: data.timezone,
+        readme: data.readme,
+        macAddress: data.macAddress,
       },
+    });
+
+    return NextResponse.json(
+      { success: true, message: "Données IP enregistrées avec succès", data: record },
       { status: 201 }
     );
   } catch (error) {
     console.error("Erreur lors du traitement:", error);
-
     return NextResponse.json(
       {
         success: false,
