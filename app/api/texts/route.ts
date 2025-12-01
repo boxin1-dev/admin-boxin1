@@ -4,22 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 const cache: Record<string, { data: Record<string, string>; time: number }> =
   {};
-const TTL = 3600000; // 1 hour
+const TTL = 10000; // 1 hour
 
 export async function GET(request: NextRequest) {
   try {
     const lang = request.nextUrl.searchParams.get("lang") || "fr";
-    const now = Date.now();
 
-    if (cache[lang] && now - cache[lang].time < TTL) {
-      return NextResponse.json(cache[lang].data, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Cache-Control": "public, max-age=3600",
-        },
-      });
-    }
-
+    // Récupérer directement depuis la DB sans cache
     const texts = await prisma.textEntry.findMany({
       where: { lang },
       select: { key: true, value: true },
@@ -30,19 +21,18 @@ export async function GET(request: NextRequest) {
       return acc;
     }, {} as Record<string, string>);
 
-    cache[lang] = { data: textMap, time: now };
-
     return NextResponse.json(textMap, {
       headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=3600",
+        "Cache-Control": "no-store, no-cache, must-revalidate",
       },
     });
   } catch (error) {
     console.error("Error fetching texts:", error);
     return NextResponse.json(
       { error: "Failed to fetch texts" },
-      { status: 500, headers: { "Access-Control-Allow-Origin": "*" } }
+      {
+        status: 500,
+      }
     );
   }
 }
