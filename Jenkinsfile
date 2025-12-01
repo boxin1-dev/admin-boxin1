@@ -122,6 +122,25 @@ pipeline {
                 '''
             }
         }
+        
+        stage('Apply seed script') {
+            steps {
+                sh '''
+                    echo "🌱 Running Prisma seed..."
+
+                    docker run --rm \
+                        --network ${NETWORK_NAME} \
+                        -v $(pwd):/app \
+                        -w /app \
+                        node:20 bash -c "
+                            npm install
+                            npm install -g prisma@6.18.0
+                            export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
+                            prisma db seed
+                        "
+                '''
+            }
+        }
 
 
 
