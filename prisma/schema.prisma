@@ -12,7 +12,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -85,11 +84,10 @@ model TextEntry {
   @@map("text_entry")
 }
 
-
 model BoxClientInfo {
-  id         Int      @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   ip         String
-  hostname   String?  
+  hostname   String?
   city       String?
   region     String?
   country    String?
@@ -99,7 +97,6 @@ model BoxClientInfo {
   readme     String?
   macAddress String?
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
-
