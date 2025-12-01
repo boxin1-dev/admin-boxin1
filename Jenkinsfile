@@ -117,7 +117,6 @@ pipeline {
                             npm install -g prisma@6.18.0
                             export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
                             prisma migrate deploy
-                            prisma db seed
                         "
                 '''
             }
@@ -131,20 +130,19 @@ pipeline {
 
                     docker run --rm \
                         --network ${NETWORK_NAME} \
-                        -v $(pwd)/prisma:/app/prisma \
-                        -v $(pwd)/src/generated:/app/src/generated \
-                        -v $(pwd)/prisma/seed.ts:/app/prisma/seed.ts \
+                        -v $(pwd)/${MIGRATION_DIR}/prisma:/app/prisma \
+                        -v $(pwd)/${MIGRATION_DIR}/src:/app/src \
                         -w /app \
                         node:20 bash -c "
                             npm install -g prisma@6.18.0 tsx
                             npm install dotenv @prisma/client
                             export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
+                            prisma generate --schema=./prisma/schema.prisma
                             tsx prisma/seed.ts
                         "
                 '''
             }
         }
-
 
 
         stage('Verify Database') {
