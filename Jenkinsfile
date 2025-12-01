@@ -114,7 +114,7 @@ pipeline {
                         -v $(pwd)/${MIGRATION_DIR}/prisma:/app/prisma \
                         -w /app \
                         node:20 bash -c "
-                            npm install -g prisma
+                            npm install -g prisma@6.18.0
                             export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
                             prisma migrate deploy
                         "
