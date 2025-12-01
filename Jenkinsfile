@@ -84,35 +84,25 @@ pipeline {
             }
         }
 
-        stage('Clone repo for Build') {
-                steps {
-                    sh '''
-                        WORKSPACE_DIR="${WORKSPACE_DIR}"
-                        
-                        if [ -d "${WORKSPACE_DIR}/.git" ]; then
-                            echo "📦 Le dossier ${WORKSPACE_DIR} existe déjà."
-                            
-                            # Sauvegarder les fichiers de configuration importants si nécessaire
-                            cp -f ${WORKSPACE_DIR}/.env.example ${WORKSPACE}/.env.backup 2>/dev/null || true
-                            
-                            # Supprimer les fichiers problématiques
-                            rm -rf ${WORKSPACE_DIR}/src/generated/
-                            rm -rf ${WORKSPACE_DIR}/node_modules/
-                            
-                            # Réinitialiser le repo
-                            cd ${WORKSPACE_DIR}
-                            git fetch --all
-                            git clean -fd  # Supprime les fichiers non trackés
-                            git reset --hard origin/${REPO_BRANCH}
-                        else
-                            echo "📥 Clonage du dépôt ${REPO_MAIN}..."
-                            git clone https://${GITHUB_TOKEN}@github.com/${REPO_MAIN} ${WORKSPACE_DIR}
-                            cd ${WORKSPACE_DIR}
-                            git checkout ${REPO_BRANCH}
-                        fi
-                    '''
-                }
+        stage('Clone repo for Migrations') {
+            steps {
+                sh '''
+                    MIGRATION_DIR="Boxin1_migrations"
+                    
+                    if [ -d "${MIGRATION_DIR}/.git" ]; then
+                        echo "📦 Le dossier ${MIGRATION_DIR} existe déjà. Mise à jour du dépôt..."
+                        cd ${MIGRATION_DIR}
+                        git fetch --all
+                        git reset --hard origin/${REPO_BRANCH}
+                        git pull origin ${REPO_BRANCH}
+                    else
+                        echo "📥 Clonage du dépôt ${REPO_MAIN}..."
+                        git clone https://${GITHUB_TOKEN}@github.com/${REPO_MAIN} ${MIGRATION_DIR}
+                    fi
+                '''
+            }
         }
+        
         
         stage('Apply Prisma Migrations') {
             steps {
