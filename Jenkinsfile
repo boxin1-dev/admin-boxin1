@@ -103,31 +103,28 @@ pipeline {
             }
         }
         
+        
         stage('Apply Prisma Migrations') {
             steps {
                 sh '''
-                    echo "🔄 Application des migrations Prisma..."
+                    echo "🔄 Applying Prisma migrations..."
 
-                    # Copier les migrations Prisma dans le container
-                    docker cp Boxin1_migrations/prisma ${POSTGRES_CONTAINER}:/tmp/
-
-                    # Installer Node.js et Prisma dans le container temporairement
-                    docker exec ${POSTGRES_CONTAINER} bash -c "
-                        apt-get update && apt-get install -y curl
-                        curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-                        apt-get install -y nodejs
-                        npm install -g pnpm prisma
-                    "
-
-                    # Exécuter les migrations
-                    docker exec -e DATABASE_URL=\"postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}\" \
-                        ${POSTGRES_CONTAINER} bash -c "
-                        cd /tmp/prisma
-                        prisma migrate deploy
-                    "
+                    docker run --rm \
+                        --network ${NETWORK_NAME} \
+                        -v $(pwd)/${MIGRATION_DIR}/prisma:/app/prisma \
+                        -w /app \
+                        node:20 bash -c "
+                            npm install -g prisma
+                            export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
+                            prisma migrate deploy
+                        "
                 '''
             }
         }
+
+
+
+
 
         stage('Verify Database') {
             steps {
