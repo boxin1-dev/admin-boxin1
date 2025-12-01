@@ -102,32 +102,32 @@ pipeline {
                 '''
             }
         }
-
         
         stage('Apply Prisma Migrations') {
             steps {
-                dir("Boxin1_migrations") {
-                    sh '''
-                        echo "🔄 Application des migrations depuis Jenkins..."
-                        
-                        # Installer Prisma CLI localement
-                        npm install -g prisma
-                        
-                        # Appliquer les migrations directement depuis Jenkins
-                        DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5434/${POSTGRES_DB}?schema=public"
-                        
-                        echo "🔗 Connexion à: ${DATABASE_URL}"
-                        
-                        # Générer le client
-                        npx prisma generate
-                        
-                        # Déployer les migrations
-                        npx prisma migrate deploy
-                    '''
-                }
+                sh '''
+                    echo "🔄 Application des migrations Prisma..."
+
+                    # Copier les migrations Prisma dans le container
+                    docker cp Boxin1_migrations/prisma ${POSTGRES_CONTAINER}:/tmp/
+
+                    # Installer Node.js et Prisma dans le container temporairement
+                    docker exec ${POSTGRES_CONTAINER} bash -c "
+                        apt-get update && apt-get install -y curl
+                        curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+                        apt-get install -y nodejs
+                        npm install -g pnpm prisma
+                    "
+
+                    # Exécuter les migrations
+                    docker exec -e DATABASE_URL=\"postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}\" \
+                        ${POSTGRES_CONTAINER} bash -c "
+                        cd /tmp/prisma
+                        prisma migrate deploy
+                    "
+                '''
             }
         }
-
 
         stage('Verify Database') {
             steps {
