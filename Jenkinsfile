@@ -123,7 +123,7 @@ pipeline {
             }
         }
         
-
+        
         stage('Seed database') {
             steps {
                 sh '''
@@ -136,7 +136,8 @@ pipeline {
                         -v $(pwd)/prisma/seed.ts:/app/prisma/seed.ts \
                         -w /app \
                         node:20 bash -c "
-                            npm install -g prisma@6.18.0 tsx dotenv
+                            npm install -g prisma@6.18.0 tsx
+                            npm install dotenv @prisma/client
                             export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
                             tsx prisma/seed.ts
                         "
