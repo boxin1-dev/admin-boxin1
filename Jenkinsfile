@@ -105,65 +105,51 @@ pipeline {
         
         
         stage('Apply Prisma Migrations') {
-            // ⭐ NOUS UTILISONS L'AGENT DOCKER ICI ⭐
-            agent {
-                docker {
-                    image 'node:20'
-                    // L'argument --network est essentiel pour communiquer avec Postgres
-                    args "--network ${NETWORK_NAME}" 
-                    // On peut aussi utiliser un volume temporaire pour le cache NPM
-                    args "-e HOME=/tmp" 
-                }
-            }
             steps {
                 sh '''
                     echo "🔄 Applying Prisma migrations..."
 
-                    # Nous sommes DÉJÀ dans le conteneur node:20.
-                    # Les commandes s'exécutent en tant qu'utilisateur Jenkins.
-                    cd ${MIGRATION_DIR}
-
-                    # Installation globale de Prisma
-                    npm install -g prisma@6.18.0
-                    
-                    # Configuration de la base de données
-                    export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
-                    
-                    # Déploiement des migrations. Les fichiers temporaires sont gérés en tant que Jenkins.
-                    prisma migrate deploy
+                    docker run --rm \
+                        --network ${NETWORK_NAME} \
+                        -v $(pwd)/${MIGRATION_DIR}/prisma:/app/prisma \
+                        -w /app \
+                        node:20 bash -c "
+                            npm install -g prisma@6.18.0
+                            export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
+                            prisma migrate deploy
+                        "
                 '''
             }
         }
         
         
         stage('Seed database') {
-            // ⭐ NOUS UTILISONS L'AGENT DOCKER ICI ⭐
-            agent {
-                docker {
-                    image 'node:20'
-                    args "--network ${NETWORK_NAME}"
-                    args "-e HOME=/tmp"
-                }
-            }
             steps {
                 sh '''
                     echo "🌱 Seeding database..."
-                    
-                    # Nous sommes DÉJÀ dans le conteneur node:20.
-                    cd ${MIGRATION_DIR}
 
-                    # Installation des dépendances
-                    npm install -g pnpm
-                    pnpm install
-                       
-                    # Configuration de la base de données
-                    export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
+                    echo "📁 Vérification du contenu du dossier..."
+                    ls -la ${MIGRATION_DIR}/
+
+                    docker run --rm \
+                        --network ${NETWORK_NAME} \
+                        -v $(pwd)/${MIGRATION_DIR}:/app \
+                        -w /app \
+                        node:20 bash -c "
+                            # Installation des dépendances
+                            npm install -g pnpm
+
+                            pnpm install
+
+                            # Configuration de la base de données
+                            export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
                             
-                    # Génération du client Prisma (les fichiers générés sont possédés par Jenkins)
-                    pnpm prisma generate
+                            # Génération du client Prisma
+                            pnpm prisma generate
                             
-                    # Exécution du seed
-                    pnpm tsx prisma/seed.ts
+                            # Exécution du seed
+                            pnpm tsx prisma/seed.ts
+                        "
                 '''
             }
         }
@@ -178,6 +164,7 @@ pipeline {
                 '''
             }
         }        
+
 
 
 
