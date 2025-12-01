@@ -128,8 +128,8 @@ pipeline {
                 sh '''
                     echo "🌱 Seeding database..."
 
+                    echo "📁 Vérification du contenu du dossier..."
                     ls -la ${MIGRATION_DIR}/
-            
 
                     docker run --rm \
                         --network ${NETWORK_NAME} \
