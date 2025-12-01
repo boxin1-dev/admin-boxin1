@@ -2,6 +2,13 @@ pipeline {
     agent any
 
     stages {
+
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()  // Cette fonction nettoie le workspace
+            }
+        }
+        
         stage('Load Environment Variables') {
             steps {
                 script {
