@@ -124,7 +124,7 @@ pipeline {
                         node:20 bash -c "
                             npm install -g prisma@6.18.0
                             export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
-                            prisma migrate deploy
+                            prisma migrate deploy --schema=/app/prisma/schema.prisma
                         "
                 '''
             }
@@ -153,7 +153,7 @@ pipeline {
                             export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
                             
                             # Génération du client Prisma
-                            pnpm prisma generate
+                            pnpm prisma generate --schema=prisma/schema.prisma
                             
                             # Exécution du seed
                             pnpm tsx prisma/seed.ts
