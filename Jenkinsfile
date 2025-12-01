@@ -123,21 +123,22 @@ pipeline {
             }
         }
         
-        stage('Apply seed script') {
+        stage('Run Prisma Seed') {
             steps {
                 sh '''
-                    echo "🌱 Running Prisma seed..."
+                echo "🌱 Running Prisma seed..."
 
-                    docker run --rm \
-                        --network ${NETWORK_NAME} \
-                        -v $(pwd):/app \
-                        -w /app \
-                        node:20 bash -c "
-                            npm install
-                            npm install -g prisma@6.18.0
-                            export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
-                            prisma db seed
-                        "
+                docker run --rm \
+                    --network ${NETWORK_NAME} \
+                    -v $(pwd)/prisma:/app/prisma \
+                    -v $(pwd)/src/generated/client:/app/src/generated/client \
+                    -w /app \
+                    node:20 bash -c "
+                    npm install -g tsx
+                    npm install -g prisma@6.18.0
+                    export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}
+                    npx tsx prisma/seed.ts
+                    "
                 '''
             }
         }
