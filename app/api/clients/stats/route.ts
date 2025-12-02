@@ -1,4 +1,3 @@
-// app/api/clients/stats/route.ts
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -72,11 +71,11 @@ export async function GET() {
       Array<{ date: string; count: number }>
     >`
       SELECT 
-        DATE(created_at) as date,
+        DATE("createdAt") as date, -- CORRECTION: Utilisation de "createdAt" entre guillemets doubles
         COUNT(*)::int as count
       FROM box_client_info
-      WHERE created_at >= ${thirtyDaysAgo}
-      GROUP BY DATE(created_at)
+      WHERE "createdAt" >= ${thirtyDaysAgo} -- CORRECTION: Utilisation de "createdAt" entre guillemets doubles
+      GROUP BY DATE("createdAt")
       ORDER BY date ASC
     `;
 
