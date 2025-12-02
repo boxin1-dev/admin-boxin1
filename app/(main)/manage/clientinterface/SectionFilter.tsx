@@ -43,7 +43,7 @@ export default function SectionFilter({ onSectionSelect }: SectionFilterProps) {
     const uniqueSections = new Set(keys.map((key) => key.split(".")[0]));
     return Array.from(uniqueSections).sort();
   }, [sections]);
-
+  
   // Fonction pour trouver toutes les clés correspondant à une section
   const findMatchingKeys = React.useCallback(
     (sectionPrefix: string) => {
