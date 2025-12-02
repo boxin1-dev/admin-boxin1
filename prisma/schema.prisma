@@ -100,4 +100,6 @@ model BoxClientInfo {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("box_client_info")
 }
