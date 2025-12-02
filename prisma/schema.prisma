@@ -96,7 +96,7 @@ model BoxClientInfo {
   org        String?
   timezone   String?
   readme     String?
-  macAddress String?
+  macAddress String  @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
