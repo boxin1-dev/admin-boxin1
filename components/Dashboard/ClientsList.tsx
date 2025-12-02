@@ -1,4 +1,3 @@
-// components/Dashboard/ClientsList.tsx
 "use client";
 
 import { Badge } from "@/components/ui/badge";
@@ -18,13 +17,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Table,
   TableBody,
   TableCell,
@@ -37,7 +29,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
-  Filter,
   MoreVertical,
   Search,
   Trash2,
@@ -126,6 +117,8 @@ export function ClientsList() {
   });
 
   // Liste unique des pays pour le filtre
+  // On filtre par Boolean pour s'assurer qu'il n'y a pas de null/undefined,
+  // et on ne devrait donc pas se retrouver avec des valeurs "" dans ce tableau.
   const countries = Array.from(
     new Set(data?.data.clients.map((c) => c.country).filter(Boolean))
   );
@@ -165,8 +158,8 @@ export function ClientsList() {
               className="pl-9"
             />
           </div>
-
-          <Select
+          {/*
+                <Select
             value={country}
             onValueChange={(value) => {
               setCountry(value);
@@ -179,11 +172,6 @@ export function ClientsList() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">Tous les pays</SelectItem>
-              {countries.map((c) => (
-                <SelectItem key={c} value={c || ""}>
-                  {c}
-                </SelectItem>
-              ))}
             </SelectContent>
           </Select>
 
@@ -198,6 +186,10 @@ export function ClientsList() {
               <SelectItem value="city">Ville</SelectItem>
             </SelectContent>
           </Select>
+                
+                
+                
+                */}
         </div>
 
         {/* Table */}
